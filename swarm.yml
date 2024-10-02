@@ -1,15 +1,28 @@
 version: "3"
 
 services:
+  caddy:
+    image: "hokay/micros-caddy:1.0.1"
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
   frontend:
-    image: "hokay/frontend:1.0.2"
+    image: "hokay/frontend:1.0.4"
     deploy:
       mode: replicated
       replicas: 1
     ports:
       - "8081:8081"
+    environment:
+      BROKER_URL: "http://backend"
   broker-service:
-    image: "hokay/broker-service:1.0.0"
+    image: "hokay/broker-service:1.0.1"
     deploy:
       mode: replicated
       replicas: 1
@@ -79,3 +92,8 @@ services:
       POSTGRES_DB: users
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

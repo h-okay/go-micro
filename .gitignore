@@ -36,6 +36,8 @@ Thumbs.db
 
 # Docker volumes
 db-data/
+caddy_data/
+caddy_config/
 
 # Temporary files
 *.tmp
